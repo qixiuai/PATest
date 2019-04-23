@@ -1,0 +1,201 @@
+\documentclass{article}
+\usepackage{fullpage,graphicx}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,multirow}
+\usepackage{algorithmic,comment,url}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing, shapes,positioning}
+\usepackage[ruled,vlined,commentsnumbered,titlenotnumbered]{algorithm2e}
+\newcommand{\expecting}[1]{\noindent{[\textbf{We are expecting:} \em #1\em]}}
+\newcommand{\hint}[1]{\noindent{[\textbf{HINT:} \em #1 \em]}}
+\newcommand{\pts}[1]{\textbf{(#1 pt.)}}
+
+
+\begin{document}
+\noindent
+CS 161 \hfill \textbf{Problem Set 4} \newline 
+{Winter 2019} \hfill \textbf{Due:} Friday, February 15, 2019, at 3pm on Gradescope
+
+\noindent
+\rule{\linewidth}{0.4pt}
+\noindent
+\section*{Exercises}
+Please do the exercises on your own.
+
+\noindent
+\rule{\linewidth}{0.4pt}
+\begin{enumerate}
+\item\pts{2} 
+Suppose that $h: \mathcal{U} \to \{0,\ldots,n-1\}$ is a uniformly random function.  That is, for each $x \in \mathcal{U}$, $h(x)$ is distributed uniformly at random in the set $\{0,\ldots,n-1\}$, and the values $\{h(x) \,:\, x \in \mathcal{U}\}$ are independent.  Prove that for any $x \neq y \in \mathcal{U}$,
+\[ \mathbb{P}_h\{ h(x) = h(y) \} = \frac{1}{n}. \]
+Above, notice that $x$ and $y$ are fixed and the probability is over the choice of $h$.
+
+\expecting{A short but rigorous proof.}
+
+%%%%%%%5
+
+\item\pts{4} Let $\mathcal{U} = \{000,001,002, \ldots, 999\}$ (aka, all of the numbers between $0$ and $999$, padded so that they are three digits long) and let $n = 10$.  For each of the following hash families $\mathcal{H}$ consisting of functions $h: \mathcal{U} \to \{0, \ldots, n-1\}$, decide whether $\mathcal{H}$ is universal or not, and justify your result with a formal proof.
+
+\begin{enumerate}
+\item \pts{2} For $i = 1, 2, 3$, let $h_i(x)$ be the $i$'th least-significant digit of $x$.  (For example, $h_2(456) = 5$).  Define $\mathcal{H} = \{h_1, h_2, h_3\}$.  Is $\mathcal{H}$ a universal hash family?
+\item \pts{2} For $a \in \{1, \ldots, 9\}$, let $h_a(x)$ be the least-significant digit of $ax$.  (For example, $h_2(123)$ is the least-significant digit of $2 \times 123 = 246$, which is $6$).  Define $\mathcal{H} = \{h_i \,:\, i=1, \ldots, 9 \}$.  Is $\mathcal{H}$ a universal hash family?
+\end{enumerate}
+
+\hint{To show that something is \em not \em a universal hash family, you could find two distinct elements $x, y \in \mathcal{U}$ so that when $h \in \mathcal{H}$ is chosen randomly, the probability that $h(x) = h(y)$ is larger than it's supposed to be.}
+
+\expecting{For each part, a yes/no answer and a rigorous proof using the definition of a universal hash family.}
+
+%%%%%%%%
+
+\item \pts{4} Give one example of a \em connected \em undirected graph on four vertices, A, B, C, and D, so that both depth-first search and breadth-first search discover the vertices in the same order when started at A.  Give one example of a \em connected \em undirected graph where BFS and DFS discover the vertices in a different order when started at A.  
+
+Above, \em discover \em means the time that the algorithm first reaches the vertex. Assume that both DFS and BFS iterate over neighbors in alphabetical order.  
+
+\textbf{Note on drawing graphs:} You might try \texttt{http://madebyevan.com/fsm/} which allows you to draw graphs with your mouse and convert it into \LaTeX  \,code.  (By default it makes directed graphs; you can add an arrow in both directions to get something that approximates an undirected graph).
+
+\expecting{A drawing of your two graphs and an ordered list of vertices discovered by BFS and DFS for each of them.}
+
+
+\end{enumerate}
+\newpage
+\noindent
+\rule{\linewidth}{0.4pt}
+\section*{Problems}
+
+You may talk with your fellow CS161-ers about the problems.  However:
+\begin{itemize}
+	\item Try the problems on your own \em before \em collaborating.
+	\item Write up your answers yourself, in your own words.   You should never share your typed-up solutions with your collaborators.
+	\item If you collaborated, list the names of the students you collaborated with at the beginning of each problem.
+\end{itemize}
+
+\noindent
+\rule{\linewidth}{0.4pt}
+
+
+\begin{enumerate}
+\setcounter{enumi}{3}
+
+\vspace{.5cm}
+\item \pts{6} \textbf{[Badger badger badger.]}
+A family of badgers lives in a network of tunnels; the network is modeled by an undirected connected graph $G$ with $n$ vertices and $m$ edges (see below).
+Each of the tunnels have different widths, and a badger of width $x$ can only pass through tunnels of width $\geq x$.
+
+
+\vspace{-.5cm}
+\begin{center}
+\fbox{
+\begin{minipage}{16cm}
+For example, in the graph below, a badger with width $x=2$ could get from $v_0$ to $v_4$ (either by $v_0 \to v_1 \to v_4$ or by $v_0 \to v_3 \to v_4$).  However, a badger of width $3$ could not get from $v_0$ to $v_4$.
+
+\begin{center}
+\begin{tikzpicture}
+\node at (0,0) {\includegraphics[width=8cm]{badgerden}};
+\node at (-1.45,1.25) {\Large $v_0$};
+\node at (1.4,1.25) {\Large $v_1$};
+\node at (0.2,1.3) {3.1415};
+\node at (-2.9,-1) {\Large $v_2$};
+\node at (0,-1) {\Large $v_3$};
+\node at (3,-1) {\Large $v_4$};
+\node at (-.5,-.1) {2};
+\node at (-2.1,0) {1.1};
+\node at (2.3,0) {2};
+\node at (-1.4,-1) {$3.3$};
+\node at (1.6,-1) {2.1};
+\node[anchor=south] at (-3,1) {\includegraphics[width=1.2cm]{badger}};
+\node at (-3,.8) {$x$};
+\draw[<->, blue] (-3.4, 1) to (-2.6, 1);
+\end{tikzpicture}
+\end{center}
+\end{minipage}}\end{center}
+
+The graph is stored in the adjacency-list format we discussed in class.  More precisely, $G$ has vertices $v_0,\ldots,v_{n-1}$ and is stored as an array $V$ of length $n$, so that $V[i]$ is a pointer to the head of a linked list $N_i$ which stores integers.  An integer $j \in \{0,\ldots,n-1\}$ is in $N_i$ if and only if there is an edge between the vertices $v_i$ and $v_j$ in $G$. 
+
+You have access to a function \texttt{tunnelWidth} which runs in time $O(1)$ so that if $\{v_i,v_j\}$ is an edge in $G$, then \texttt{tunnelWidth(i,j)} returns the width of the tunnel between $v_i$ and $v_j$.  (Notice that \texttt{tunnelWidth(i,j)}$=$\texttt{tunnelWidth(j,i)}).  If $\{v_i,v_j\}$ is not an edge in $G$, then you have no guarantee about what \texttt{tunnelWidth(i,j)} returns.
+\vfill \hfill [Actual questions on next page.]
+\newpage
+
+\begin{enumerate}
+\item\label{parta} \pts{3} Design a deterministic algorithm which takes as input $G$ in the format above, integers $s,t \in \{0,\ldots,n-1\}$, and a desired badger width $x > 0$; the algorithm should return \textbf{True} if there is a path from $v_s$ to $v_t$ that a badger of width $x$ could fit through, or \textbf{False} if no such path exists.   
+
+(For example, in the example above, if $s=0$ and $t=4$ then your algorithm should return \textbf{True} if $0 < x \leq 2$ and \textbf{False} if $x > 2$). 
+
+Your algorithm should run in time $O(n + m)$.  You may use any algorithm we have seen in class as a subroutine. 
+
+\textbf{Note:}
+In your pseudocode, make sure you use the adjacency-list format for $G$ described above.  For example, your pseudocode should \em not \em say something like ``iterate over all edges in the graph.'' Instead it should more explicitly show how to do that with the format described.  (We will not be so pedantic about this in the future, but one point of this problem is to make sure you understand how the adjacency-list format works).
+
+\expecting{Pseudocode \textbf{AND} an English description of your algorithm, and a short justification of the running time.  You should make sure to use the adjacency-list representation of $G$ described above in your pseudocode.  You can use any algorithms we have seen from class as a subroutine, but if you significantly modify them make sure to be precise about how this interacts with the adjacency-list representation.}
+\vspace{.5cm}
+\item \pts{3} Design a deterministic algorithm which takes as input $G$ in the format above and integers $s, t \in \{0,\ldots,n-1\}$; the algorithm should return the largest value $x$ so that there exists a path from $v_s$ to $v_t$ which accomodates a badger of width $x$.  Notice that since $G$ is connected, there is a path from $v_s$ to $v_t$ in $G$.  Your algorithm should run in time $O( (n+m) \log(m) )$.  You may use any algorithm we have seen in class as a subroutine.  
+
+\hint{Use part (a).}
+
+\textbf{Note:} Don't assume that you know anything about the tunnel widths ahead of time.  (e.g., they are not necessarily bounded integers).
+
+\textbf{Note:} The same note about pseudocode holds as in part (a).
+
+\expecting{Pseudocode \textbf{AND} and English description of your algorithm, and a short justification of the running time.  You should make sure to use the adjacency-list representation of $G$ described above in your pseudocode.  You can use any algorithms we have seen from class as a subroutine, but if you significantly modify them make sure to be precise about how this interacts with the adjacency-list representation.}
+
+
+\end{enumerate}
+
+%%%%%%%%%%%%
+
+\newpage
+\item \pts{8} \textbf{[Painted Penguins.]} A large flock of $T$ painted penguins will be waddling past the Stanford campus next week as part of their annual migration from Monterey Bay Aquarium to the Sausalito Cetacean Institute.  Painted Penguins (not to be confused with pedantic penguins) are an interesting species.  They can come in a huge number of colors---say, $M$ colors---but each flock of $T$ penguins only has $m$ colors represented, where $m < T$.  
+The penguins will waddle by one at a time, and after they have waddled by they won't come back again.
+
+For example, if $T = 7$, $M = 100000$ and $m = 3$, then a flock of $T$ painted penguins might look like: 
+\begin{center}
+
+\includegraphics[width=1.2cm]{seabreeze}
+\hspace{.5cm}
+\includegraphics[width=1.2cm]{seabreeze}
+\hspace{.5cm}
+\includegraphics[width=1.2cm]{indigo}
+\hspace{.5cm}
+\includegraphics[width=1.2cm]{ultraviolet}
+\hspace{.5cm}
+\includegraphics[width=1.2cm]{indigo}
+\hspace{.5cm}
+\includegraphics[width=1.2cm]{ultraviolet}
+\hspace{.5cm}
+\includegraphics[width=1.2cm]{seabreeze}
+
+\texttt{seabreeze, seabreeze, indigo, ultraviolet, indigo, ultraviolet, seabreeze}
+\end{center}
+You'll see this sequence in order, and only once.
+After the penguins have gone, you'll be asked questions like ``How many \texttt{indigo} penguins were there?" (Answer: 2), or ``How many \texttt{neon orange} penguins were there?" (Answer: 0).
+
+You know $m,M$ and $T$ in advance, and you have access to a universal hash family $\mathcal{H}$, so that each function $h \in \mathcal{H}$ maps the set of $M$ colors into the set $\{0,\ldots,n-1\}$, for some integer $n$.
+For example, one function $h \in \mathcal{H}$ might have $h(\text{\texttt{seabreeze}}) = 5$.
+
+\begin{enumerate}
+\item \pts{5} Suppose that $n = 10m$.  Suppose also that you only have space to store:
+\begin{itemize} 
+\item  An array $B$ of length $n$, which stores numbers in the set $\{0,\ldots,T\}$, and
+\item one function $h$ from $\mathcal{H}$.  
+\end{itemize} Use the universal hash family $\mathcal{H}$ to create a randomized data structure that fits in this space and that supports the following operations in time $O(1)$ in the worst case (assuming that you can evaluate $h \in \mathcal{H}$ in time $O(1)$):
+\begin{itemize}
+\item \texttt{Update(color)}: Update the data structure when you see a penguin with color \texttt{color}.
+\item \texttt{Query(color)}: Return the number of penguins of color \texttt{color} that you have seen so far.  For each query, your query should be correct with probability at least 9/10.  That is, for all colors~\texttt{color}, 
+\[ \mathbb{P} \{\text{\texttt{Query}}(\text{\texttt{color}}) = \text{ the true number of penguins with color \texttt{color} } \} \geq \frac{9}{10}. \]
+\end{itemize}
+To describe your data structure:
+\begin{enumerate}
+\item Describe how the array $B$ and the function $h$ are initialized. 
+\item Give pseudocode for \texttt{Query}.
+\item Give pseudocode for \texttt{Update}.
+\end{enumerate} 
+
+\expecting{A description following the outline above (including pseudocode), and a short but rigorous proof that your data structure meets the requirements.  Make sure you clearly indicate where you are using the property of universal hash families.}
+
+\item \pts{3} Suppose that you now have $k$ times the space you had in part (a).  That is, you can store $k$ arrays $B_1, \ldots, B_k$ and $k$ functions $h_1, \ldots, h_k$ from $\mathcal{H}$.  Adapt your data structure from part (a) so that all operations run in time $O(k)$, and the \texttt{Query} operation is correct with probability at least $1 - \frac{1}{10^k}$.
+
+\expecting{As in part (a), a description following the outline above (except say how all arrays $B_i$ and functions $h_i$ are initialized), and a short but rigorous proof that your data structure meets the requirements. Make sure you clearly indicate where you are using the property of universal hash families.}
+\end{enumerate}  
+
+
+\end{enumerate}
+
+\end{document}
